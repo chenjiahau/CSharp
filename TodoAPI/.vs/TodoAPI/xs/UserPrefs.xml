@@ -1,4 +1,38 @@
 ﻿<Properties StartupConfiguration="{AB8079D6-5CC6-4F89-8D59-ED1911B23F49}|https">
-  <MonoDevelop.Ide.ItemProperties.TodoAPI FirstBuild="True" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/DTOs/UpdateWorkDTO.cs">
+    <Files>
+      <File FileName="Program.cs" Line="23" Column="1" />
+      <File FileName="Data/TodoContext.cs" Line="12" Column="29" />
+      <File FileName="Models/Todo.cs" Line="3" Column="22" />
+      <File FileName="Models/DTOs/AddWorkDTO.cs" Line="5" Column="23" />
+      <File FileName="Models/DTOs/WorkDTO.cs" Line="3" Column="19" />
+      <File FileName="Models/DTOs/UpdateWorkDTO.cs" Line="3" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TodoAPI">
+            <Node name="TodoAPI">
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="Data" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="DTOs" expanded="True">
+                  <Node name="UpdateWorkDTO.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.TodoAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
