@@ -22,10 +22,10 @@ namespace TodoAPI.Controllers
         * METHOD: GET
         */
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Fetch from database
-            var scheduleModels = dbContext.Schedules.Include("User").Include("Work").ToList();
+            var scheduleModels = await dbContext.Schedules.Include("User").Include("Work").ToListAsync();
 
             // Convert Schedule models to Schedule DTOs
             var scheduleDTOs = new List<ScheduleDTO>();

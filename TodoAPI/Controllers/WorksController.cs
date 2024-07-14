@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 using TodoAPI.Data;
 using TodoAPI.Models.DTOs;
 
@@ -20,10 +22,10 @@ namespace TodoAPI.Controllers
          * METHOD: GET
          */
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Fetch from database
-            var workModels = dbContext.Works.ToList();
+            var workModels = await dbContext.Works.ToListAsync();
 
             // Convert Work models to Work DTOs
             var workDTOs = new List<WorkDTO>();

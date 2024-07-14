@@ -24,10 +24,10 @@ namespace TodoAPI.Controllers
          */
         [HttpGet]
         [Route("{id:Guid}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             // Fetch from database
-            var scheduleModel = dbContext.Schedules.Include("User").Include("Work").FirstOrDefault(x => x.Id == id);
+            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
 
             if (scheduleModel == null)
             {
@@ -62,7 +62,7 @@ namespace TodoAPI.Controllers
          * METHOD: POST
          */
         [HttpPost]
-        public IActionResult Add([FromBody] AddScheduleDTO addScheduleDTO)
+        public async Task<IActionResult> Add([FromBody] AddScheduleDTO addScheduleDTO)
         {
             // Convert Schedule DTO to Schedule model
             var scheduleModel = new Schedule
@@ -73,8 +73,8 @@ namespace TodoAPI.Controllers
             };
 
             // Insert to database
-            dbContext.Schedules.Add(scheduleModel);
-            dbContext.SaveChanges();
+            await dbContext.Schedules.AddAsync(scheduleModel);
+            await dbContext.SaveChangesAsync();
 
             // Fetch from database and convert User model to User DTO
             var userModel = dbContext.Users.FirstOrDefault(x => x.Id == scheduleModel.UserId);
@@ -90,7 +90,7 @@ namespace TodoAPI.Controllers
             }
 
             // Fetch from database and convert Work model to Work DTO
-            var workModel = dbContext.Works.FirstOrDefault(x => x.Id == scheduleModel.WorkId);
+            var workModel = await dbContext.Works.FirstOrDefaultAsync(x => x.Id == scheduleModel.WorkId);
             var workDTO = new WorkDTO { };
             if (workModel != null)
             {
@@ -120,13 +120,10 @@ namespace TodoAPI.Controllers
          */
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult PutById([FromRoute] Guid id, [FromBody] UpdateScheduleDTO updateScheduleDTO)
+        public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateScheduleDTO updateScheduleDTO)
         {
             // Fetch from database
-            var scheduleModel = dbContext.Schedules.Include("User").Include("Work").FirstOrDefault(x => x.Id == id);
-
-            Console.Write(updateScheduleDTO);
-            Console.Write(scheduleModel);
+            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
 
             if (scheduleModel == null)
             {
@@ -139,10 +136,10 @@ namespace TodoAPI.Controllers
             scheduleModel.WorkId = updateScheduleDTO.WorkId;
 
             // Save to database
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Convert Schedule model to Schedule DTO
-            var newScheduleModel = dbContext.Schedules.Include("User").Include("Work").FirstOrDefault(x => x.Id == id);
+            var newScheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
             var scheduleDTO = new ScheduleDTO { };
             if (newScheduleModel != null)
             {
@@ -175,10 +172,10 @@ namespace TodoAPI.Controllers
          */
         [HttpDelete]
         [Route("{id:Guid}")]
-        public IActionResult DeleteById([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
             // Fetch from database
-            var scheduleModel = dbContext.Schedules.Include("User").Include("Work").FirstOrDefault(x => x.Id == id);
+            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
 
             if (scheduleModel == null)
             {
@@ -187,7 +184,7 @@ namespace TodoAPI.Controllers
 
             // Save to database
             dbContext.Schedules.Remove(scheduleModel);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Convert Schedule model to Schedule DTO
             var scheduleDTO = new ScheduleDTO

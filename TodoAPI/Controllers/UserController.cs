@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 using TodoAPI.Data;
 using TodoAPI.Models;
 using TodoAPI.Models.DTOs;
@@ -22,10 +24,10 @@ namespace TodoAPI.Controllers
          */
         [HttpGet]
         [Route("{id:Guid}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             // Fetch from database
-            var userModel = dbContext.Users.FirstOrDefault(x => x.Id == id);
+            var userModel = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (userModel == null)
             {
@@ -49,7 +51,7 @@ namespace TodoAPI.Controllers
          * METHOD: POST
          */
         [HttpPost]
-        public IActionResult Add([FromBody] AddUserDTO addUserDto)
+        public async Task<IActionResult> Add([FromBody] AddUserDTO addUserDto)
         {
             // Convert User DTO to User model
             var userModel = new User
@@ -59,8 +61,8 @@ namespace TodoAPI.Controllers
             };
 
             // Insert to database
-            dbContext.Users.Add(userModel);
-            dbContext.SaveChanges();
+            await dbContext.Users.AddAsync(userModel);
+            await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
             var userDto = new UserDTO
@@ -80,10 +82,10 @@ namespace TodoAPI.Controllers
          */
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult PutById([FromRoute] Guid id, [FromBody] UpdateUserDTO updateUserDTO)
+        public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateUserDTO updateUserDTO)
         {
             // Fetch from database
-            var userModel = dbContext.Users.FirstOrDefault(x => x.Id == id);
+            var userModel = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (userModel == null)
             {
@@ -95,7 +97,7 @@ namespace TodoAPI.Controllers
             userModel.Email = updateUserDTO.Email;
 
             // Save to database
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
             var userDTO = new UserDTO
@@ -115,10 +117,10 @@ namespace TodoAPI.Controllers
          */
         [HttpDelete]
         [Route("{id:Guid}")]
-        public IActionResult DeleteById([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
             // Fetch from database
-            var userModel = dbContext.Users.FirstOrDefault(x => x.Id == id);
+            var userModel = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (userModel == null)
             {
@@ -127,7 +129,7 @@ namespace TodoAPI.Controllers
 
             // Save to database
             dbContext.Users.Remove(userModel);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
             var userDTO = new UserDTO
