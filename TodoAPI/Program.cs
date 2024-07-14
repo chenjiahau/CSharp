@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.Data;
+using TodoAPI.Repositories;
 using TodoAPI.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TodoDbContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDB"))
 );
+
+builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
+builder.Services.AddScoped<IWorkRepository, SQLWorkRepository>();
+builder.Services.AddScoped<IScheduleRepository, SQLScheduleRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMappingProfile));
 

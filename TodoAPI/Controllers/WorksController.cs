@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using TodoAPI.Data;
 using TodoAPI.Models.DTOs;
+using TodoAPI.Repositories;
 
 namespace TodoAPI.Controllers
 {
@@ -11,12 +10,12 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class WorksController : ControllerBase
     {
-        private readonly TodoDbContext dbContext;
+        private readonly IWorkRepository workRepository;
         private readonly IMapper mapper;
 
-        public WorksController(TodoDbContext _dbContext, IMapper _mapper)
+        public WorksController(IWorkRepository _workRepository, IMapper _mapper)
         {
-            dbContext = _dbContext;
+            workRepository = _workRepository;
             mapper = _mapper;
         }
 
@@ -28,7 +27,7 @@ namespace TodoAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             // Fetch from database
-            var workModels = await dbContext.Works.ToListAsync();
+            var workModels = await workRepository.GetAll();
 
             // Convert Work models to Work DTOs
             var workDTOs = mapper.Map<List<WorkDTO>>(workModels);
@@ -38,4 +37,3 @@ namespace TodoAPI.Controllers
         }
     }
 }
-

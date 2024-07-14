@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using TodoAPI.Data;
 using TodoAPI.Models.DTOs;
+using TodoAPI.Repositories;
 
 namespace TodoAPI.Controllers
 {
@@ -11,12 +10,12 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly TodoDbContext dbContext;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
 
-        public UsersController(TodoDbContext _dbContext, IMapper _mapper)
+        public UsersController(IUserRepository _userRepository, IMapper _mapper)
         {
-            dbContext = _dbContext;
+            userRepository = _userRepository;
             mapper = _mapper;
         }
 
@@ -28,7 +27,7 @@ namespace TodoAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             // Fetch from database
-            var userModels = await dbContext.Users.ToListAsync();
+            var userModels = await userRepository.GetAll();
 
             // Convert User models to User DTOs
             var userDTOs = mapper.Map<List<UserDTO>>(userModels);
@@ -38,4 +37,3 @@ namespace TodoAPI.Controllers
         }
     }
 }
-

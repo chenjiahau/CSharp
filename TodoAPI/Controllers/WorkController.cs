@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using TodoAPI.Data;
 using TodoAPI.Models;
 using TodoAPI.Models.DTOs;
+using TodoAPI.Repositories;
 
 namespace TodoAPI.Controllers
 {
@@ -12,12 +11,12 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class WorkController : ControllerBase
     {
-        private readonly TodoDbContext dbContext;
+        private readonly IWorkRepository workRepository;
         private readonly IMapper mapper;
 
-        public WorkController(TodoDbContext _dbContext, IMapper _mapper)
+        public WorkController(IWorkRepository _workRepository, IMapper _mapper)
         {
-            dbContext = _dbContext;
+            workRepository = _workRepository;
             mapper = _mapper;
         }
 
@@ -30,7 +29,7 @@ namespace TodoAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             // Fetch from database
-            var workModel = await dbContext.Works.FirstOrDefaultAsync(x => x.Id == id);
+            var workModel = await workRepository.GetById(id);
 
             if (workModel == null)
             {
@@ -59,8 +58,7 @@ namespace TodoAPI.Controllers
             };
 
             // Insert to database
-            await dbContext.Works.AddAsync(workModel);
-            await dbContext.SaveChangesAsync();
+            workModel = await workRepository.Add(workModel);
 
             // Convert Work model to Work DTO
             var workDTO = mapper.Map<WorkDTO>(workModel);
@@ -77,20 +75,14 @@ namespace TodoAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateWorkDTO updateWorkDTO)
         {
-            // Fetch from database
-            var workModel = await dbContext.Works.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (workModel == null)
-            {
-                return NotFound();
-            }
-
-            // Update Work model
-            workModel.Title = updateWorkDTO.Title;
-            workModel.Description = updateWorkDTO.Description;
-
             // Save to database
-            await dbContext.SaveChangesAsync();
+            var workModel = new Work
+            {
+                Title = updateWorkDTO.Title,
+                Description = updateWorkDTO.Description
+            };
+
+            workModel = await workRepository.PutById(id, workModel);
 
             // Convert Work model to Work DTO
             var workDTO = mapper.Map<WorkDTO>(workModel);
@@ -107,17 +99,8 @@ namespace TodoAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
-            // Fetch from database
-            var workModel = await dbContext.Works.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (workModel == null)
-            {
-                return NotFound();
-            }
-
             // Save to database
-            dbContext.Works.Remove(workModel);
-            await dbContext.SaveChangesAsync();
+            var workModel = await workRepository.DeleteById(id);
 
             // Convert Work model to Work DTO
             var workDTO = mapper.Map<WorkDTO>(workModel);
@@ -127,4 +110,3 @@ namespace TodoAPI.Controllers
         }
     }
 }
-

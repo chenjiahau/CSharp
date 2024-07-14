@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using TodoAPI.Data;
 using TodoAPI.Models.DTOs;
+using TodoAPI.Repositories;
 
 namespace TodoAPI.Controllers
 {
@@ -11,12 +10,12 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class SchedulesController : Controller
     {
-        private readonly TodoDbContext dbContext;
+        private readonly IScheduleRepository scheduleRepository;
         private readonly IMapper mapper;
 
-        public SchedulesController(TodoDbContext _dbContext, IMapper _mapper)
+        public SchedulesController(IScheduleRepository _scheduleRepository, IMapper _mapper)
         {
-            dbContext = _dbContext;
+            scheduleRepository = _scheduleRepository;
             mapper = _mapper;
         }
 
@@ -28,7 +27,7 @@ namespace TodoAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             // Fetch from database
-            var scheduleModels = await dbContext.Schedules.Include("User").Include("Work").ToListAsync();
+            var scheduleModels = await scheduleRepository.GetAll();
 
             // Convert Schedule models to Schedule DTOs
             var scheduleDTOs = mapper.Map<List<ScheduleDTO>>(scheduleModels);
@@ -38,4 +37,3 @@ namespace TodoAPI.Controllers
         }
     }
 }
-

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using TodoAPI.Data;
 using TodoAPI.Models;
 using TodoAPI.Models.DTOs;
+using TodoAPI.Repositories;
 
 namespace TodoAPI.Controllers
 {
@@ -12,12 +11,12 @@ namespace TodoAPI.Controllers
     [ApiController]
     public class ScheduleController : Controller
     {
-        private readonly TodoDbContext dbContext;
+        private readonly IScheduleRepository scheduleRepository;
         private readonly IMapper mapper;
 
-        public ScheduleController(TodoDbContext _dbContext, IMapper _mapper)
+        public ScheduleController(IScheduleRepository _scheduleRepository, IMapper _mapper)
         {
-            dbContext = _dbContext;
+            scheduleRepository = _scheduleRepository;
             mapper = _mapper;
         }
 
@@ -30,7 +29,7 @@ namespace TodoAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             // Fetch from database
-            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
+            var scheduleModel = await scheduleRepository.GetById(id);
 
             if (scheduleModel == null)
             {
@@ -60,29 +59,12 @@ namespace TodoAPI.Controllers
             };
 
             // Insert to database
-            await dbContext.Schedules.AddAsync(scheduleModel);
-            await dbContext.SaveChangesAsync();
-
-            // Fetch from database and convert User model to User DTO
-            var userModel = dbContext.Users.FirstOrDefault(x => x.Id == scheduleModel.UserId);
-            var userDTO = new UserDTO { };
-            if (userModel != null)
+            scheduleModel = await scheduleRepository.Add(scheduleModel);
+            var scheduleDTO = new ScheduleDTO { };
+            if (scheduleModel != null)
             {
-                userDTO = mapper.Map<UserDTO>(userModel);
+                scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
             }
-
-            // Fetch from database and convert Work model to Work DTO
-            var workModel = await dbContext.Works.FirstOrDefaultAsync(x => x.Id == scheduleModel.WorkId);
-            var workDTO = new WorkDTO { };
-            if (workModel != null)
-            {
-                workDTO = mapper.Map<WorkDTO>(workModel);
-            }
-
-            // Create Schedule DTO
-            var scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
-            scheduleDTO.User = userDTO;
-            scheduleDTO.Work = workDTO;
 
             // Return Schedule DTO
             return Ok(scheduleDTO);
@@ -96,24 +78,17 @@ namespace TodoAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateScheduleDTO updateScheduleDTO)
         {
-            // Fetch from database
-            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
-
-            if (scheduleModel == null)
-            {
-                return NotFound();
-            }
-
-            // Update Schedule model
-            scheduleModel.ExectionDate = updateScheduleDTO.ExectionDate;
-            scheduleModel.UserId = updateScheduleDTO.UserId;
-            scheduleModel.WorkId = updateScheduleDTO.WorkId;
-
             // Save to database
-            await dbContext.SaveChangesAsync();
+            var scheduleModel = new Schedule
+            {
+                UserId = updateScheduleDTO.UserId,
+                WorkId = updateScheduleDTO.WorkId
+            };
+
+            scheduleModel = await scheduleRepository.PutById(id, scheduleModel);
 
             // Convert Schedule model to Schedule DTO
-            var newScheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
+            var newScheduleModel = await scheduleRepository.GetById(id);
             var scheduleDTO = mapper.Map<ScheduleDTO>(newScheduleModel);
 
             // Return Schedule DTO
@@ -128,17 +103,13 @@ namespace TodoAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
-            // Fetch from database
-            var scheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
+            // Save to database
+            var scheduleModel = await scheduleRepository.DeleteById(id);
 
             if (scheduleModel == null)
             {
                 return NotFound();
             }
-
-            // Save to database
-            dbContext.Schedules.Remove(scheduleModel);
-            await dbContext.SaveChangesAsync();
 
             // Convert Schedule model to Schedule DTO
             var scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
@@ -148,4 +119,3 @@ namespace TodoAPI.Controllers
         }
     }
 }
-
