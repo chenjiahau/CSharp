@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TodoAPI.Data;
@@ -12,10 +13,12 @@ namespace TodoAPI.Controllers
     public class WorkController : ControllerBase
     {
         private readonly TodoDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public WorkController(TodoDbContext _dbContext)
+        public WorkController(TodoDbContext _dbContext, IMapper _mapper)
         {
             dbContext = _dbContext;
+            mapper = _mapper;
         }
 
         /**
@@ -35,12 +38,7 @@ namespace TodoAPI.Controllers
             }
 
             // Convert Work model to Work DTO
-            var workDto = new WorkDTO
-            {
-                Id = workModel.Id,
-                Title = workModel.Title,
-                Description = workModel.Description,
-            };
+            var workDto = mapper.Map<WorkDTO>(workModel);
 
             // Return Work DTO
             return Ok(workDto);
@@ -65,12 +63,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert Work model to Work DTO
-            var workDTO = new WorkDTO
-            {
-                Id = workModel.Id,
-                Title = workModel.Title,
-                Description = workModel.Description
-            };
+            var workDTO = mapper.Map<WorkDTO>(workModel);
 
             // Return Work DTO
             return Ok(workDTO);
@@ -100,12 +93,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert Work model to Work DTO
-            var workDTO = new WorkDTO
-            {
-                Id = workModel.Id,
-                Title = workModel.Title,
-                Description = workModel.Description
-            };
+            var workDTO = mapper.Map<WorkDTO>(workModel);
 
             // Return Work DTO
             return Ok(workDTO);
@@ -132,12 +120,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert Work model to Work DTO
-            var workDTO = new WorkDTO
-            {
-                Id = workModel.Id,
-                Title = workModel.Title,
-                Description = workModel.Description
-            };
+            var workDTO = mapper.Map<WorkDTO>(workModel);
 
             // Return Work DTO
             return Ok(workDTO);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TodoAPI.Data;
@@ -11,10 +12,12 @@ namespace TodoAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TodoDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public UsersController(TodoDbContext _dbContext)
+        public UsersController(TodoDbContext _dbContext, IMapper _mapper)
         {
             dbContext = _dbContext;
+            mapper = _mapper;
         }
 
         /**
@@ -28,18 +31,7 @@ namespace TodoAPI.Controllers
             var userModels = await dbContext.Users.ToListAsync();
 
             // Convert User models to User DTOs
-            var userDTOs = new List<UserDTO>();
-            foreach (var userModel in userModels)
-            {
-                userDTOs.Add(
-                    new UserDTO()
-                    {
-                        Id = userModel.Id,
-                        Name = userModel.Name,
-                        Email = userModel.Email,
-                    }
-                );
-            }
+            var userDTOs = mapper.Map<List<UserDTO>>(userModels);
 
             // Return User DTOs
             return Ok(userDTOs);

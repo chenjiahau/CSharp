@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TodoAPI.Data;
@@ -12,10 +13,12 @@ namespace TodoAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly TodoDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public UserController(TodoDbContext _dbContext)
+        public UserController(TodoDbContext _dbContext, IMapper _mapper)
         {
             dbContext = _dbContext;
+            mapper = _mapper;
         }
 
         /**
@@ -35,12 +38,7 @@ namespace TodoAPI.Controllers
             }
 
             // Convert User model to User DTO
-            var userDto = new UserDTO
-            {
-                Id = userModel.Id,
-                Name = userModel.Name,
-                Email = userModel.Email,
-            };
+            var userDto = mapper.Map<UserDTO>(userModel);
 
             // Return User DTO
             return Ok(userDto);
@@ -65,12 +63,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
-            var userDto = new UserDTO
-            {
-                Id = userModel.Id,
-                Name = userModel.Name,
-                Email = userModel.Email,
-            };
+            var userDto = mapper.Map<UserDTO>(userModel);
 
             // Return User DTO
             return Ok(userDto);
@@ -100,12 +93,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
-            var userDTO = new UserDTO
-            {
-                Id = userModel.Id,
-                Name = userModel.Name,
-                Email = userModel.Email
-            };
+            var userDTO = mapper.Map<UserDTO>(userModel);
 
             // Return User DTO
             return Ok(userDTO);
@@ -132,12 +120,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert User model to User DTO
-            var userDTO = new UserDTO
-            {
-                Id = userModel.Id,
-                Name = userModel.Name,
-                Email = userModel.Email
-            };
+            var userDTO = mapper.Map<UserDTO>(userModel);
 
             // Return User DTO
             return Ok(userDTO);

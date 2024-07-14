@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TodoAPI.Data;
@@ -12,10 +13,12 @@ namespace TodoAPI.Controllers
     public class ScheduleController : Controller
     {
         private readonly TodoDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public ScheduleController(TodoDbContext _dbContext)
+        public ScheduleController(TodoDbContext _dbContext, IMapper _mapper)
         {
             dbContext = _dbContext;
+            mapper = _mapper;
         }
 
         /**
@@ -35,23 +38,7 @@ namespace TodoAPI.Controllers
             }
 
             // Convert Schedule model to Schedule DTO
-            var scheduleDTO = new ScheduleDTO
-            {
-                Id = scheduleModel.Id,
-                ExectionDate = scheduleModel.ExectionDate,
-                User = new UserDTO
-                {
-                    Id = scheduleModel.UserId,
-                    Name = scheduleModel.User?.Name,
-                    Email = scheduleModel.User?.Email
-                },
-                Work = new WorkDTO
-                {
-                    Id = scheduleModel.WorkId,
-                    Title = scheduleModel.Work?.Title,
-                    Description = scheduleModel.Work?.Description
-                }
-            };
+            var scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
 
             // Return Schedule DTO
             return Ok(scheduleDTO);
@@ -81,12 +68,7 @@ namespace TodoAPI.Controllers
             var userDTO = new UserDTO { };
             if (userModel != null)
             {
-                userDTO = new UserDTO
-                {
-                    Id = scheduleModel.UserId,
-                    Name = userModel.Name,
-                    Email = userModel.Email
-                };
+                userDTO = mapper.Map<UserDTO>(userModel);
             }
 
             // Fetch from database and convert Work model to Work DTO
@@ -94,21 +76,13 @@ namespace TodoAPI.Controllers
             var workDTO = new WorkDTO { };
             if (workModel != null)
             {
-                workDTO = new WorkDTO
-                {
-                    Id = scheduleModel.WorkId,
-                    Title = workModel.Title,
-                    Description = workModel.Description
-                };
+                workDTO = mapper.Map<WorkDTO>(workModel);
             }
 
             // Create Schedule DTO
-            var scheduleDTO = new ScheduleDTO
-            {
-                Id = scheduleModel.Id,
-                User = userDTO,
-                Work = workDTO
-            };
+            var scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
+            scheduleDTO.User = userDTO;
+            scheduleDTO.Work = workDTO;
 
             // Return Schedule DTO
             return Ok(scheduleDTO);
@@ -140,27 +114,7 @@ namespace TodoAPI.Controllers
 
             // Convert Schedule model to Schedule DTO
             var newScheduleModel = await dbContext.Schedules.Include("User").Include("Work").FirstOrDefaultAsync(x => x.Id == id);
-            var scheduleDTO = new ScheduleDTO { };
-            if (newScheduleModel != null)
-            {
-                scheduleDTO = new ScheduleDTO
-                {
-                    Id = newScheduleModel.Id,
-                    ExectionDate = newScheduleModel.ExectionDate,
-                    User = new UserDTO
-                    {
-                        Id = newScheduleModel.UserId,
-                        Name = newScheduleModel.User?.Name,
-                        Email = newScheduleModel.User?.Email
-                    },
-                    Work = new WorkDTO
-                    {
-                        Id = newScheduleModel.WorkId,
-                        Title = newScheduleModel.Work?.Title,
-                        Description = newScheduleModel.Work?.Description
-                    }
-                };
-            }
+            var scheduleDTO = mapper.Map<ScheduleDTO>(newScheduleModel);
 
             // Return Schedule DTO
             return Ok(scheduleDTO);
@@ -187,23 +141,7 @@ namespace TodoAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             // Convert Schedule model to Schedule DTO
-            var scheduleDTO = new ScheduleDTO
-            {
-                Id = scheduleModel.Id,
-                ExectionDate = scheduleModel.ExectionDate,
-                User = new UserDTO
-                {
-                    Id = scheduleModel.UserId,
-                    Name = scheduleModel.User?.Name,
-                    Email = scheduleModel.User?.Email
-                },
-                Work = new WorkDTO
-                {
-                    Id = scheduleModel.WorkId,
-                    Title = scheduleModel.Work?.Title,
-                    Description = scheduleModel.Work?.Description
-                }
-            };
+            var scheduleDTO = mapper.Map<ScheduleDTO>(scheduleModel);
 
             // Return Schedule DTO
             return Ok(scheduleDTO);

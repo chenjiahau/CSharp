@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TodoAPI.Data;
@@ -11,10 +12,12 @@ namespace TodoAPI.Controllers
     public class SchedulesController : Controller
     {
         private readonly TodoDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public SchedulesController(TodoDbContext _dbContext)
+        public SchedulesController(TodoDbContext _dbContext, IMapper _mapper)
         {
             dbContext = _dbContext;
+            mapper = _mapper;
         }
 
         /**
@@ -28,31 +31,7 @@ namespace TodoAPI.Controllers
             var scheduleModels = await dbContext.Schedules.Include("User").Include("Work").ToListAsync();
 
             // Convert Schedule models to Schedule DTOs
-            var scheduleDTOs = new List<ScheduleDTO>();
-            foreach (var scheduleModel in scheduleModels)
-            {
-                var userDTO = new UserDTO
-                {
-                    Id = scheduleModel.UserId,
-                    Name = scheduleModel.User?.Name,
-                    Email = scheduleModel.User?.Email
-                };
-
-                var workDTO = new WorkDTO
-                {
-                    Id = scheduleModel.WorkId,
-                    Title = scheduleModel.Work?.Title,
-                    Description = scheduleModel.Work?.Description
-                };
-
-                scheduleDTOs.Add(new ScheduleDTO
-                {
-                    Id = scheduleModel.Id,
-                    ExectionDate = scheduleModel.ExectionDate,
-                    User = userDTO,
-                    Work = workDTO
-                });
-            }
+            var scheduleDTOs = mapper.Map<List<ScheduleDTO>>(scheduleModels);
 
             // Return Schedule DTOs
             return Ok(scheduleDTOs);
