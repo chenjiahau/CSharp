@@ -38,7 +38,7 @@ namespace TodoAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schedule",
+                name: "Schedules",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -48,15 +48,15 @@ namespace TodoAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedule", x => x.Id);
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Schedule_Users_UserId",
+                        name: "FK_Schedules_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Schedule_Works_WorkId",
+                        name: "FK_Schedules_Works_WorkId",
                         column: x => x.WorkId,
                         principalTable: "Works",
                         principalColumn: "Id",
@@ -64,13 +64,13 @@ namespace TodoAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedule_UserId",
-                table: "Schedule",
+                name: "IX_Schedules_UserId",
+                table: "Schedules",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedule_WorkId",
-                table: "Schedule",
+                name: "IX_Schedules_WorkId",
+                table: "Schedules",
                 column: "WorkId");
         }
 
@@ -78,7 +78,7 @@ namespace TodoAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Schedule");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Users");

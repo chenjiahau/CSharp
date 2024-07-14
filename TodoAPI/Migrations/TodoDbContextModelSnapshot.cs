@@ -43,7 +43,7 @@ namespace TodoAPI.Migrations
 
                     b.HasIndex("WorkId");
 
-                    b.ToTable("Schedule");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("TodoAPI.Models.User", b =>

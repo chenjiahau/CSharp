@@ -1,6 +1,6 @@
 ﻿namespace TodoAPI.Models.DTOs
 {
-	public class AdduserDTO
+	public class AddUserDTO
 	{
         public string? Name { get; set; }
         public string? Email { get; set; }

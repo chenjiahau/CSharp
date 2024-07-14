@@ -12,7 +12,7 @@ using TodoAPI.Data;
 namespace TodoAPI.Migrations
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20240713123628_initial")]
+    [Migration("20240714004628_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace TodoAPI.Migrations
 
                     b.HasIndex("WorkId");
 
-                    b.ToTable("Schedule");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("TodoAPI.Models.User", b =>
