@@ -14,14 +14,21 @@ namespace TodoAPI.Repositories
             dbContext = _dbContext;
         }
 
-        public async Task<List<User>> GetAll(string? column, string? keyword)
-        {
+        public async Task<List<User>> GetAll(
+            string? column,
+            string? keyword,
+            string? sortBy,
+            bool isAsc = true,
+            int pageNumber = 1,
+            int pageSize = 1
+        ) {
             var users = dbContext.Users.AsQueryable();
 
             if (
                 string.IsNullOrWhiteSpace(column) == false &&
                 string.IsNullOrWhiteSpace(keyword) == false
-            ) {
+            )
+            {
                 if (column.Equals("name", StringComparison.OrdinalIgnoreCase))
                 {
                     users = users.Where(x => x.Name.Contains(keyword));
@@ -34,7 +41,23 @@ namespace TodoAPI.Repositories
                 }
             }
 
-            return await users.ToListAsync();
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (sortBy.Equals("name", StringComparison.OrdinalIgnoreCase))
+                {
+                    users = isAsc ? users.OrderBy(x => x.Name) : users.OrderByDescending(x => x.Name);
+                }
+
+
+                if (sortBy.Equals("email", StringComparison.OrdinalIgnoreCase))
+                {
+                    users = isAsc ? users.OrderBy(x => x.Email) : users.OrderByDescending(x => x.Email);
+                }
+            }
+
+            var skipResults = (pageNumber - 1) * pageSize;
+
+            return await users.Skip(skipResults).Take(pageSize).ToListAsync();
         }
 
         public async Task<User?> GetById(Guid id)

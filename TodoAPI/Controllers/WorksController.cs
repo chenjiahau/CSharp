@@ -26,11 +26,14 @@ namespace TodoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(
             [FromQuery] string? column,
-            [FromQuery] string? keyword
-        )
-        {
+            [FromQuery] string? keyword,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool isAsc,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 1
+        ) {
             // Fetch from database
-            var workModels = await workRepository.GetAll(column, keyword);
+            var workModels = await workRepository.GetAll(column, keyword, sortBy, isAsc, pageNumber, pageSize);
 
             // Convert Work models to Work DTOs
             var workDTOs = mapper.Map<List<WorkDTO>>(workModels);

@@ -4,7 +4,14 @@ namespace TodoAPI.Repositories
 {
 	public interface IScheduleRepository
 	{
-        Task<List<Schedule>> GetAll(string? column, string? keyword);
+        Task<List<Schedule>> GetAll(
+            string? column,
+            string? keyword,
+            string? sortBy,
+            bool isAsc,
+            int pageNumber,
+            int pageSize
+        );
         Task<Schedule?> GetById(Guid id);
         Task<Schedule?> Add(Schedule schedule);
         Task<Schedule?> PutById(Guid id, Schedule schedule);

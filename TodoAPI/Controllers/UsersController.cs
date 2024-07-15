@@ -26,10 +26,14 @@ namespace TodoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(
             [FromQuery] string? column,
-            [FromQuery] string? keyword
+            [FromQuery] string? keyword,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool isAsc,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 1
         ) {
             // Fetch from database
-            var userModels = await userRepository.GetAll(column, keyword);
+            var userModels = await userRepository.GetAll(column, keyword, sortBy, isAsc, pageNumber, pageSize);
 
             // Convert User models to User DTOs
             var userDTOs = mapper.Map<List<UserDTO>>(userModels);

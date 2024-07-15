@@ -14,8 +14,14 @@ namespace TodoAPI.Repositories
             dbContext = _dbContext;
         }
 
-        public async Task<List<Schedule>> GetAll(string? column, string? keyword)
-        {
+        public async Task<List<Schedule>> GetAll(
+            string? column,
+            string? keyword,
+            string? sortBy,
+            bool isAsc = true,
+            int pageNumber = 1,
+            int pageSize = 1
+        ) {
             var schedules = dbContext.Schedules.Include("User").Include("Work").AsQueryable();
 
             if (
@@ -29,7 +35,17 @@ namespace TodoAPI.Repositories
                 }
             }
 
-            return await schedules.ToListAsync();
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (sortBy.Equals("title", StringComparison.OrdinalIgnoreCase))
+                {
+                    schedules = isAsc ? schedules.OrderBy(x => x.Title) : schedules.OrderByDescending(x => x.Title);
+                }
+            }
+
+            var skipResults = (pageNumber - 1) * pageSize;
+
+            return await schedules.Skip(skipResults).Take(pageSize).ToListAsync();
         }
 
         public async Task<Schedule?> GetById(Guid id)
