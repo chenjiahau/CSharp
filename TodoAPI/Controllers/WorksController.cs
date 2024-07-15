@@ -24,10 +24,13 @@ namespace TodoAPI.Controllers
          * METHOD: GET
          */
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? column,
+            [FromQuery] string? keyword
+        )
         {
             // Fetch from database
-            var workModels = await workRepository.GetAll();
+            var workModels = await workRepository.GetAll(column, keyword);
 
             // Convert Work models to Work DTOs
             var workDTOs = mapper.Map<List<WorkDTO>>(workModels);

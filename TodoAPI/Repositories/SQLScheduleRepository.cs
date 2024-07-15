@@ -14,9 +14,22 @@ namespace TodoAPI.Repositories
             dbContext = _dbContext;
         }
 
-        public async Task<List<Schedule>> GetAll()
+        public async Task<List<Schedule>> GetAll(string? column, string? keyword)
         {
-            return await dbContext.Schedules.Include("User").Include("Work").ToListAsync();
+            var schedules = dbContext.Schedules.Include("User").Include("Work").AsQueryable();
+
+            if (
+                string.IsNullOrWhiteSpace(column) == false &&
+                string.IsNullOrWhiteSpace(keyword) == false
+            )
+            {
+                if (column.Equals("title", StringComparison.OrdinalIgnoreCase))
+                {
+                    schedules = schedules.Where(x => x.Title.Contains(keyword));
+                }
+            }
+
+            return await schedules.ToListAsync();
         }
 
         public async Task<Schedule?> GetById(Guid id)

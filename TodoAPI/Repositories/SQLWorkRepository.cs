@@ -14,9 +14,22 @@ namespace TodoAPI.Repositories
             dbContext = _dbContext;
         }
 
-        public async Task<List<Work>> GetAll()
+        public async Task<List<Work>> GetAll(string? column, string? keyword)
         {
-            return await dbContext.Works.ToListAsync();
+            var works = dbContext.Works.AsQueryable();
+
+            if (
+                string.IsNullOrWhiteSpace(column) == false &&
+                string.IsNullOrWhiteSpace(keyword) == false
+            )
+            {
+                if (column.Equals("title", StringComparison.OrdinalIgnoreCase))
+                {
+                    works = works.Where(x => x.Title.Contains(keyword));
+                }
+            }
+
+            return await works.ToListAsync();
         }
 
         public async Task<Work?> GetById(Guid id)

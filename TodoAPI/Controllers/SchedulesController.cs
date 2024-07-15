@@ -24,10 +24,12 @@ namespace TodoAPI.Controllers
         * METHOD: GET
         */
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? column,
+            [FromQuery] string? keyword
+        ) {
             // Fetch from database
-            var scheduleModels = await scheduleRepository.GetAll();
+            var scheduleModels = await scheduleRepository.GetAll(column, keyword);
 
             // Convert Schedule models to Schedule DTOs
             var scheduleDTOs = mapper.Map<List<ScheduleDTO>>(scheduleModels);

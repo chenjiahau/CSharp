@@ -24,10 +24,12 @@ namespace TodoAPI.Controllers
          * METHOD: GET
          */
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? column,
+            [FromQuery] string? keyword
+        ) {
             // Fetch from database
-            var userModels = await userRepository.GetAll();
+            var userModels = await userRepository.GetAll(column, keyword);
 
             // Convert User models to User DTOs
             var userDTOs = mapper.Map<List<UserDTO>>(userModels);
