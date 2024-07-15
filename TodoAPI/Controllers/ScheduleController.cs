@@ -53,7 +53,9 @@ namespace TodoAPI.Controllers
             // Convert Schedule DTO to Schedule model
             var scheduleModel = new Schedule
             {
+                Title = addScheduleDTO.Title,
                 ExectionDate = addScheduleDTO.ExectionDate,
+                IsActived = addScheduleDTO.IsActived,
                 UserId = addScheduleDTO.UserId,
                 WorkId = addScheduleDTO.WorkId
             };
@@ -81,11 +83,14 @@ namespace TodoAPI.Controllers
             // Save to database
             var scheduleModel = new Schedule
             {
+                Title = updateScheduleDTO.Title,
+                ExectionDate = updateScheduleDTO.ExectionDate,
+                IsActived = updateScheduleDTO.IsActived,
                 UserId = updateScheduleDTO.UserId,
                 WorkId = updateScheduleDTO.WorkId
             };
 
-            scheduleModel = await scheduleRepository.PutById(id, scheduleModel);
+            await scheduleRepository.PutById(id, scheduleModel);
 
             // Convert Schedule model to Schedule DTO
             var newScheduleModel = await scheduleRepository.GetById(id);

@@ -43,6 +43,9 @@ namespace TodoAPI.Repositories
                 return null;
             }
 
+            existingSchedule.Title = schedule.Title;
+            existingSchedule.ExectionDate = schedule.ExectionDate;
+            existingSchedule.IsActived = schedule.IsActived;
             existingSchedule.UserId = schedule.UserId;
             existingSchedule.WorkId = schedule.WorkId;
 

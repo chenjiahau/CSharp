@@ -5,7 +5,7 @@
 namespace TodoAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIsActivedcolumnforSchedulemodel : Migration
+    public partial class Addtwonewcolumnsforscheduletable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,6 +16,12 @@ namespace TodoAPI.Migrations
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Title",
+                table: "Schedules",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
@@ -23,6 +29,10 @@ namespace TodoAPI.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "IsActived",
+                table: "Schedules");
+
+            migrationBuilder.DropColumn(
+                name: "Title",
                 table: "Schedules");
         }
     }
