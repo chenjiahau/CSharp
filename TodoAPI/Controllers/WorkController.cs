@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Data;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using TodoAPI.Models;
@@ -48,6 +50,7 @@ namespace TodoAPI.Controllers
          * METHOD: POST
          */
         [HttpPost]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> Add([FromBody] AddWorkDTO addWorkDTO)
         {
             // Convert Work DTO to Work model
@@ -73,6 +76,7 @@ namespace TodoAPI.Controllers
          */
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateWorkDTO updateWorkDTO)
         {
             // Save to database
@@ -97,6 +101,7 @@ namespace TodoAPI.Controllers
          */
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
             // Save to database

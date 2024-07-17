@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using TodoAPI.Models.DTOs;
@@ -24,6 +25,7 @@ namespace TodoAPI.Controllers
         * METHOD: GET
         */
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll(
             [FromQuery] string? column,
             [FromQuery] string? keyword,

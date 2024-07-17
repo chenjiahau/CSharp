@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Data;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using TodoAPI.Models;
@@ -26,6 +28,7 @@ namespace TodoAPI.Controllers
          */
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById(Guid id)
         {
             // Fetch from database
@@ -48,6 +51,7 @@ namespace TodoAPI.Controllers
          * METHOD: POST
          */
         [HttpPost]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> Add([FromBody] AddScheduleDTO addScheduleDTO)
         {
             // Convert Schedule DTO to Schedule model
@@ -78,6 +82,7 @@ namespace TodoAPI.Controllers
          */
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> PutById([FromRoute] Guid id, [FromBody] UpdateScheduleDTO updateScheduleDTO)
         {
             // Save to database
@@ -106,6 +111,7 @@ namespace TodoAPI.Controllers
          */
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
             // Save to database

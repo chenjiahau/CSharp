@@ -3,10 +3,15 @@
 	public class ScheduleDTO
 	{
         public Guid Id { get; set; }
+
         public string? Title { get; set; }
+
         public DateTime ExectionDate { get; set; }
+
         public bool IsActived { get; set; }
+
         public UserDTO? User { get; set; }
+
         public WorkDTO? Work { get; set; }
     }
 }

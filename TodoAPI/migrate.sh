@@ -1,3 +1,4 @@
 comment=$1
-dotnet ef migrations add "$1"
-dotnet ef database update
+context=$2
+dotnet ef migrations add "$comment" -c "$context"
+dotnet ef database update -c "$context"

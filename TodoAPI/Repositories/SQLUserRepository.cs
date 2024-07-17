@@ -82,6 +82,9 @@ namespace TodoAPI.Repositories
                 return null;
             }
 
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+
             await dbContext.SaveChangesAsync();
 
             return existingUser;
