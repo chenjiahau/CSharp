@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TodoAPI.Migrations.AuthTodoDb
 {
     /// <inheritdoc />
-    public partial class CreateAuthDB : Migration
+    public partial class InitializeAuthTodoDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

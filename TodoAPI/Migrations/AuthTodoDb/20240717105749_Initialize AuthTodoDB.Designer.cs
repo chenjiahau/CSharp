@@ -12,8 +12,8 @@ using TodoAPI.Data;
 namespace TodoAPI.Migrations.AuthTodoDb
 {
     [DbContext(typeof(AuthTodoDbContext))]
-    [Migration("20240717055100_Initialize AuthTodo Db")]
-    partial class InitializeAuthTodoDb
+    [Migration("20240717105749_Initialize AuthTodoDB")]
+    partial class InitializeAuthTodoDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

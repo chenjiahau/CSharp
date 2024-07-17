@@ -14,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+/* HttpContextAccessor */
+builder.Services.AddHttpContextAccessor();
+
 /* SwaggerGen */
 builder.Services.AddSwaggerGen(options =>
 {
@@ -90,6 +93,7 @@ builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
 builder.Services.AddScoped<IWorkRepository, SQLWorkRepository>();
 builder.Services.AddScoped<IScheduleRepository, SQLScheduleRepository>();
 builder.Services.AddScoped<ITokenRepository, SQLTokenRepository>();
+builder.Services.AddScoped<IImageRepository, SQLImageRepository>();
 
 /* AutoMapper*/
 builder.Services.AddAutoMapper(typeof(AutoMappingProfile));

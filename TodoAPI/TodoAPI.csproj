@@ -32,6 +32,8 @@
     <None Remove="Migrations\" />
     <None Remove="Mappings\" />
     <None Remove="Repositories\" />
+    <None Remove="Static\" />
+    <None Remove="Static\Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -39,5 +41,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="Mappings\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Static\" />
+    <Folder Include="Static\Upload\" />
   </ItemGroup>
 </Project>
