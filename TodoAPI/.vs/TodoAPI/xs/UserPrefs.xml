@@ -1,33 +1,27 @@
 ﻿<Properties StartupConfiguration="{AB8079D6-5CC6-4F89-8D59-ED1911B23F49}|https">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.TodoAPI PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Repositories/SQLUserRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument=".gitignore">
     <Files>
-      <File FileName="Controllers/UserController.cs" Line="104" Column="36" />
-      <File FileName="Data/TodoDbContext.cs" Line="6" Column="43" />
-      <File FileName="Data/AuthTodoDbContext.cs" Line="10" Column="62" />
-      <File FileName="Repositories/SQLUserRepository.cs" Line="86" Column="45" />
+      <File FileName="Program.cs" />
+      <File FileName="Repositories/SQLImageRepository.cs" Line="30" Column="32" />
+      <File FileName=".gitignore" Line="34" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TodoAPI">
-            <Node name="TodoAPI">
-              <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True" />
-              <Node name="Migrations" expanded="True" />
-              <Node name="Repositories">
-                <Node name="SQLUserRepository.cs" selected="True" />
-              </Node>
+            <Node name="TodoAPI" selected="True">
+              <Node name="Repositories" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

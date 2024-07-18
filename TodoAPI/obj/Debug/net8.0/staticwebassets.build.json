@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "nI41WlN7tqrTsZkJahJvmN2LqS24sFjL28Ef0ONE8oE=",
+  "Hash": "PD7ghx1ez07aMXuCmP5QAwdls0Rq9jkwDkCvyjA+NJ0=",
   "Source": "TodoAPI",
   "BasePath": "_content/TodoAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TodoAPI/wwwroot",
+      "Source": "TodoAPI",
+      "ContentRoot": "/Users/ivan/Workspaces/02.Self/CSharp/TodoAPI/wwwroot/",
+      "BasePath": "_content/TodoAPI",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

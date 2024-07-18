@@ -27,7 +27,7 @@ namespace TodoAPI.Repositories
             var name = $"{string.Format(@"{0}", Guid.NewGuid())}{image.Extension}";
             var path = Path.Combine(
                 webHostEnvironment.ContentRootPath,
-                "Static/Upload",
+                "wwwroot/images",
                 name
             );
 
