@@ -21,6 +21,10 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(typeof(Application.Categories.List.Handler).Assembly)
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
